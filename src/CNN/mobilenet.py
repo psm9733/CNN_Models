@@ -1,9 +1,5 @@
 from tensorflow import keras
-from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras.layers import Add, Input, Dense, Conv2D, Flatten, Dropout, MaxPooling2D, BatchNormalization, Activation, GlobalAveragePooling2D, DepthwiseConv2D
-import tensorflow as tf
-import os
-import matplotlib.pyplot as plt
 
 class MobileNet:
     def __init__(self, modelName, inputShape, classesNumber):
@@ -12,11 +8,11 @@ class MobileNet:
         self.channels = inputShape[2]
         self.classesNumber = classesNumber
         if modelName.lower() == "mobilenet_v1":
-            self.model = self.MobileNet_v1()
+            self.MobileNet_v1()
         elif modelName.lower() == "mobilenet_v3":
-            self.model = self.MobileNet_v2()
+            self.MobileNet_v2()
         elif modelName.lower() == "mobilenet_v3":
-            self.model = self.MobileNet_v3()
+            self.MobileNet_v3()
         else:
             self.model = None
         return
@@ -50,8 +46,8 @@ class MobileNet:
         endlayer = Dense(1024)(endlayer) 
         endlayer = Dense(self.classesNumber)(endlayer) 
         endlayer = Activation("softmax")(endlayer)
-        model = keras.Model(input, endlayer)
-        return model
+        self.model = keras.Model(input, endlayer)
+        return
 
     def MobileNet_v2(self):
         return None
@@ -75,8 +71,8 @@ class MobileNet:
         return
 
 if __name__ == "__main__":
-    classes_number = 2
+    classes = 2
     inputShape = (224, 224, 3)
-    model = MobileNet("mobilenet_v1", inputShape, classes_number)
+    model = MobileNet("mobilenet_v1", inputShape, classes)
     model.Summary()
-    model.Save("mobilenet")
+    model.Save("mobilenet_v1")
