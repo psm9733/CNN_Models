@@ -109,11 +109,6 @@ class ResNet:
     def GetModel(self):
         return self.model
 
-    def Save(self, path):
-        print("---model saved---")
-        self.model.save("../models/" + path + '.h5')
-        return
-
     def Summary(self):
         if self.model == None:
             print("Model is not define")
