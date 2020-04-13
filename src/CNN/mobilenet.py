@@ -19,8 +19,6 @@ class MobileNet:
             self.model = self.MobileNet_v3()
         else:
             self.model = None
-
-        self.model.compile(optimizer='adam', loss = 'categorical_crossentropy', metrics=['accuracy'])
         return
 
     def DepthwiseSeparableConv(self, input, filters, strides):
@@ -43,12 +41,13 @@ class MobileNet:
         endlayer = self.DepthwiseSeparableConv(endlayer, 128, (1, 1))
         endlayer = self.DepthwiseSeparableConv(endlayer, 256, (2, 2))
         endlayer = self.DepthwiseSeparableConv(endlayer, 256, (1, 1))
+        endlayer = self.DepthwiseSeparableConv(endlayer, 512, (1, 1))
         for index in range(5):
             endlayer = self.DepthwiseSeparableConv(endlayer, 512, (1, 1))
         endlayer = self.DepthwiseSeparableConv(endlayer, 512, (2, 2))
         endlayer = self.DepthwiseSeparableConv(endlayer, 1024, (2, 2))
         endlayer = GlobalAveragePooling2D()(endlayer)
-        endlayer = Dense(1000)(endlayer) 
+        endlayer = Dense(1024)(endlayer) 
         endlayer = Dense(self.classesNumber)(endlayer) 
         endlayer = Activation("softmax")(endlayer)
         model = keras.Model(input, endlayer)
@@ -65,7 +64,7 @@ class MobileNet:
 
     def Save(self, path):
         print("---model saved---")
-        self.model.save(path + '.h5')
+        self.model.save("../models/" + path + '.h5')
         return
 
     def Summary(self):
